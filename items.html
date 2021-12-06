@@ -1,12 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Items</title>
-</head>
-<body>
-    
-</body>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .allItems {
+        width: 100%;
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+        padding: 2rem;
+      }
+      .item {
+        width: 360px;
+      }
+      .image {
+        width: 100%;
+      }
+      .image img {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      function getData() {
+        fetch("https://polemika.univ-paris8.fr/omk/api/items#?c=&m=&s=&cv")
+          .then((res) => res.json())
+          .then((data) => {
+            showItems([...data]);
+          });
+      }
+      function showItems(data) {
+        let div = document.createElement("div");
+        div.classList.add("allItems");
+        document.body.appendChild(div);
+        let html = "";
+        data.forEach((c) => {
+          html += `
+            <div class="item">
+                <div class="image">
+                    <img src="${
+                      c["thumbnail_display_urls"].large
+                        ? c["thumbnail_display_urls"].large
+                        : "#"
+                    }">
+                </div>
+                <div class="id">${c["o:id"] ? c["o:id"] : "N/A"}</div>
+                <div class="title">${c["o:title"] ? c["o:title"] : "N/A"}</div>
+            </div>
+            `;
+        });
+        document.querySelector(".allItems").innerHTML = html;
+      }
+      window.onload = () => {
+        getData();
+      };
+    </script>
+  </body>
 </html>
