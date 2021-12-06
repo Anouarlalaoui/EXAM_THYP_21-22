@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -36,24 +35,26 @@
   </style>
   <body>
     <script>
-      function getData() {
+      function obtenirDesDonnées() {
         fetch("https://polemika.univ-paris8.fr/omk/api/items#?c=&m=&s=&cv")
           .then((res) => res.json())
           .then((data) => {
-            let dropDownOptions = [];
+            let optionDeListeDéroulante = [];
             for (let i = 1; i < data.length; i++) {
-              dropDownOptions.push(data[i]["dcterms:subject"][0]["@value"]);
+              optionDeListeDéroulante.push(
+                data[i]["dcterms:subject"][0]["@value"]
+              );
             }
-            dropDownOptions = [...new Set(dropDownOptions)];
-            displayDropDown(dropDownOptions, data);
+            optionDeListeDéroulante = [...new Set(optionDeListeDéroulante)];
+            afficherDropDown(optionDeListeDéroulante, data);
           });
       }
-      function displayDropDown(list, data) {
-        let select = document.createElement("select");
-        select.classList.add("dropDownFilter");
-        document.body.appendChild(select);
-        let options = ` <option value="select">Select</option> `;
-        list.forEach((c) => {
+      function afficherDropDown(liste, data) {
+        let sélectionner = document.createElement("select");
+        sélectionner.classList.add("dropDownFilter");
+        document.body.appendChild(sélectionner);
+        let options = ` <option value="select">Sélectionner</option> `;
+        liste.forEach((c) => {
           options += `<option value="${c}">${
             c.charAt(0).toUpperCase() + c.slice(1)
           }</option>`;
@@ -68,10 +69,10 @@
                 displayData.push(data[i]);
               }
             }
-            showItems(displayData);
+            afficherLeséléments(displayData);
           });
       }
-      function showItems(data) {
+      function afficherLeséléments(data) {
         let div = document.createElement("div");
         div.classList.add("allItems");
         document.body.appendChild(div);
@@ -94,7 +95,7 @@
         document.querySelector(".allItems").innerHTML = html;
       }
       window.onload = () => {
-        getData();
+        obtenirDesDonnées();
       };
     </script>
   </body>
